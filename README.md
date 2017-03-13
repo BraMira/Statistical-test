@@ -1,8 +1,8 @@
 # Statistical-test
-Mirjam Pergar
-Subject: Matematika z računalnikom
-Project name: Statistical test
-Proposer: Gregor Šega
+Mirjam Pergar  
+Subject: Matematika z računalnikom  
+Project name: Statistical test  
+Proposer: Gregor Šega  
 
 #TO DO:
 - [x] meet with proposer
