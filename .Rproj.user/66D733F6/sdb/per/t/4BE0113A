@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "n <- 2\nr <- 3;\ni <- 1;\nF <- c();\nponovitve <- 10000;\n\ntime0 <- proc.time()\n\nwhile(i<=ponovitve){\n\nX <- matrix(0,nrow = r, ncol = n);\nS <- c();\nF1 <- c();\n\nfor(j in 1:r){\n  X[j,]<- rnorm(n);\n  vsota = 0;\n  \n  for(k in 1:n){\n    vsota = vsota + (X[j,k]-mean(X[j,]))^2; #vsota pri cenilki variance\n  }\n  S[j] <- sqrt((1/(n-1))*vsota);\n  F1[j] <- (2*j -1)/r; #uteži\n}\n\nSS <- sort(S); #vrstilne stat\nF[i] <- round(sum(SS*F1)/sum(S),2);\ni <- i+1;\n\n}\ntime <- proc.time()-time0\n#pdf('Primer_10000.pdf')\nx<-seq(0,10,0.01);\nhist(F, freq = FALSE,xlim = c(min(F)-0.2,max(F)+0.2))\ncurve(dnorm(x,mean=mean(F),sd=sd(F)),add=TRUE, col = 'red')\n#dev.off()",
+    "created" : 1489422559072.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3362306551",
+    "id" : "4BE0113A",
+    "lastKnownWriteTime" : 1489427645,
+    "last_content_update" : 1489428090271,
+    "path" : "C:/Users/mirja/Desktop/FAKS/2. stopnja/1. letnik/Matematika z računalnikom/Projekt/test.R",
+    "project_path" : "test.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

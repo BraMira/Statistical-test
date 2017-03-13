@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "n <- 2;\nr <- 2;\nF <- c();\ni <- 1;\nwhile(i<=10000){\n#vzorca\nX_12 <- rnorm(n)\nX_22 <- rnorm(n)\n\n#cenilka variance\nS_12 <- sqrt((1/(n-1))*((X_12[1]-mean(X_12))^2 + (X_12[2]-mean(X_12))^2))\nS_22 <- sqrt((1/(n-1))* ((X_22[1]-mean(X_22))^2 + (X_22[2]-mean(X_22))^2))\nS <- sort(c(S_12,S_22))\n\nF[i] <- ((1/r)*S[1]+(3/r)*S[2])/(S_12+S_22)\ni <- i+1;\n}\n\npdf('Primer_10000')\nx<-seq(0,10,0.01);\nhist(F, freq = FALSE, xlim = c(0,2))\ncurve(dnorm(x,mean=mean(F),sd=sd(F)),add=TRUE, col = 'red')\ndev.off()",
+    "created" : 1489422554216.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2993262898",
+    "id" : "6FC52CE2",
+    "lastKnownWriteTime" : 1489426665,
+    "last_content_update" : 1489426665055,
+    "path" : "C:/Users/mirja/Desktop/FAKS/2. stopnja/1. letnik/Matematika z računalnikom/Projekt/2_2-primer.R",
+    "project_path" : "2_2-primer.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
