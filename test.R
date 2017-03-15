@@ -1,26 +1,28 @@
+RowVar <- function(x) {
+  rowSums((x - rowMeans(x))^2)/(dim(x)[2] - 1)
+}
+
+
 n <- 2;
 r <- 2;
 i <- 1;
 F <- c();
-ponovitve <- 300000;
+rr <- seq(1,r);
+loops <- 100000;
 
 time0 <- proc.time()
 
-while(i<=ponovitve){
+while(i<=loops){
 
-X <- matrix(0,nrow = r, ncol = n);
-S <- c();
-F1 <- c();
+X <- matrix(rnorm(n),nrow = r, ncol = n);
+S <- RowVar(X);
 
-for(j in 1:r){
-  X[j,]<- rnorm(n);
-  #S[j]<-sqrt(sum((X[j,] - mean(X[j,]))^2) / (n - 1))
-  S[j]<-var(X[j,])
-  F1[j] <- (2*j -1)/r; #uteži
-}
+# for(j in 1:r){
+#   S[j]<-var(X[j,])
+# }
 
-SS <- sort(S); #vrstilne stat
-F[i] <- round(sum(SS*F1)/sum(S),3);
+#SS <- sort(S); #vrstilne stat
+F[i] <- round(sum(sort(S)*(2*rr -1) / r)/sum(S),3);
 i <- i+1;
 
 }
