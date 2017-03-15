@@ -1,8 +1,8 @@
-n <- 2
-r <- 3;
+n <- 2;
+r <- 2;
 i <- 1;
 F <- c();
-ponovitve <- 10000;
+ponovitve <- 300000;
 
 time0 <- proc.time()
 
@@ -14,17 +14,13 @@ F1 <- c();
 
 for(j in 1:r){
   X[j,]<- rnorm(n);
-  vsota = 0;
-  
-  for(k in 1:n){
-    vsota = vsota + (X[j,k]-mean(X[j,]))^2; #vsota pri cenilki variance
-  }
-  S[j] <- sqrt((1/(n-1))*vsota);
+  #S[j]<-sqrt(sum((X[j,] - mean(X[j,]))^2) / (n - 1))
+  S[j]<-var(X[j,])
   F1[j] <- (2*j -1)/r; #uteži
 }
 
 SS <- sort(S); #vrstilne stat
-F[i] <- round(sum(SS*F1)/sum(S),2);
+F[i] <- round(sum(SS*F1)/sum(S),3);
 i <- i+1;
 
 }
