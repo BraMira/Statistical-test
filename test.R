@@ -1,34 +1,24 @@
-RowVar <- function(x) {
-  rowSums((x - rowMeans(x))^2)/(dim(x)[2] - 1)
-}
+library(matrixStats)
 
 
 n <- 2;
 r <- 2;
-i <- 1;
-F <- c();
+
 rr <- seq(1,r);
-loops <- 100000;
+loops <- 10^7;
+time0 <- proc.time() #we start the timer
 
-time0 <- proc.time()
+X <- matrix(rnorm(n*r*loops),nrow = r*loops,ncol=n);#generate a random matrix
 
-while(i<=loops){
+S <- rowVars(X); #row sample variances
+dim(S)<-c(loops,r);#vector -> matrix
 
-X <- matrix(rnorm(n),nrow = r, ncol = n);
-S <- RowVar(X);
+F <- sapply(1:loops,function(x) round(sum(sort(S[x,])*(2*rr -1) / r)/sum(S[x,]),3))
 
-# for(j in 1:r){
-#   S[j]<-var(X[j,])
-# }
+time <- proc.time()-time0 #we stop the timer
 
-#SS <- sort(S); #vrstilne stat
-F[i] <- round(sum(sort(S)*(2*rr -1) / r)/sum(S),3);
-i <- i+1;
-
-}
-time <- proc.time()-time0
-#pdf('Primer_10000.pdf')
+#pdf('Primer_1e+6_1.pdf')
 x<-seq(0,10,0.01);
-hist(F, freq = FALSE,xlim = c(min(F)-0.2,max(F)+0.2))
+hist(F,freq = FALSE,xlim = c(min(F)-0.2,max(F)+0.2))
 curve(dnorm(x,mean=mean(F),sd=sd(F)),add=TRUE, col = 'red')
 #dev.off()
