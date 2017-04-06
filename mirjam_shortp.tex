@@ -23,6 +23,8 @@
 \usepackage{amsfonts}
 \usepackage{amsmath,amsthm}
 \usepackage{url}
+\usepackage{pdfpages}
+
 
 \title[Statistical test]
 {Statistical test}
@@ -35,91 +37,75 @@
 \date[April 20th 2017] % (optional)
 {April 20th 2017}
 
-
+\setbeamertemplate{footline}[frame number]
 \begin{document}
-
-\begin{frame}{Speaker's Name}{About Our Next Speaker}
-
-  \begin{itemize}
-  \item
-    Current affiliation of Speaker's Name
-
-    % Examples:
-    \begin{itemize}
-    \item
-      Professor of mathematics, University of Wherever.
-    \item
-      Junior partner at company X.
-    \item
-      Speaker for organization/project X.
-    \end{itemize}
-  \item
-    Experience and achievements
-    % Optional. Use this if it is appropriate to slightly flatter the
-    % speaker, for example if the speaker has been invited. 
-    % Using subitems, list things that make the speaker look
-    % interesting and competent.
-
-    % Examples:
-    \begin{itemize}
-    \item
-      Academic degree, but only if appropriate
-    \item
-      Current and/or previous positions, possibly with dates
-    \item
-      Publications (possibly just number of publications)
-    \item
-      Awards, prizes
-    \end{itemize}
-  \item
-    Concerning today's talk
-    % Optional. Use this to point out specific experiences/knowledge
-    % of the speaker that are important for the talk and that do not
-    % follow from the above.
-
-    % Examples:
-    \begin{itemize}
-    \item
-      Expert who has worked in the field/project for X month/years.
-    \item
-      Will present his/her/group's/company's research on the subject.
-    \item
-      Will summarize project report or current project status.
-    \end{itemize}
-  \end{itemize}  
+\begin{frame}
+\titlepage
 \end{frame}
+
+\begin{frame}{Description of the project}
+Generate 
+$$X_{1,1}, X_{1,2},X_{1,3}, \dots , X_{1,n}$$
+$$\vdots$$
+$$X_{r,1}, X_{r,2}, X_{r,3}, \dots, X_{r,n}$$
+for a normally distributed random variable $X$ and some $r$,$n$.\\
+Calculate sample variances $S^2_{1}, \dots, S^2_{r}$.\\
+Test homoscedacity for significance level $\alpha$, for some $\alpha$.\\
+Use the proposed statistical test: $$F =\frac{ \sum_{i=1}^{r} S^2_{(i)} \frac{2i-1}{r}}{\sum_{i=1}^{r} S^2_{i}}$$
+
+\end{frame}
+
+\begin{frame}{Predespositions of the project}
+\begin{itemize}
+\item $X-N(0,1)$
+\item $n = \{2,3,4,\dots, 9,10,12,14,\dots, 18,20,25,30,40,60\}$
+\item $r = \{2,3,4, \dots ,9,10,15,20\}$
+\item $\alpha = \{1\%,5\%,10\%\}$
+\end{itemize}
+\pause
+How many times should we generate the random variables?\\
+How long will this take?
+
+\end{frame}
+
+\begin{frame}{Loops}
+$n=2$, $r=2$:
+
+\begin{figure}
+
+\begin{overprint}
+\onslide<1>\centerline{\includegraphics[width=8cm]{Primer_1e+3.pdf}}
+\onslide<2>\centerline{\includegraphics[width=8cm]{Primer_1e+4.pdf}}
+\onslide<3>\centerline{\includegraphics[width=8cm]{Primer_1e+5.pdf}}
+\onslide<4>\centerline{\includegraphics[width=8cm]{Primer_1e+6.pdf}}
+%vstavi še en graf
+\end{overprint}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Time}
+\begin{itemize}
+\item $n=2, r=2$: $15,06s$
+\item $n=2, r=20$: $19,22s$
+\item $n=10,r=20$: $69,25s$
+\item $n=\{2,\dots,10\},  r=\{1, \dots,10\}$: $2123,33s -35min$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Goals and plans}
+\begin{itemize}
+\item \textbf{Main goal:} Generate three tables of the proposed statistical test
+\item \textbf{Work done so far:} One generated table
+\item \textbf{Plans:} 
+\begin{itemize}
+\item Generate the other two tables
+\item Compare the test to a well known test (F-test)
+\item Improve the test (if time permits)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
 
 \end{document}
 
-library(matrixStats)
-
-
-N <- c(seq(2,10),seq(12,20,2),25,30,40,60);
-R <- c(seq(2,10),15,20);
-alpha <- 0.01;
-alpha_0.01 <- data.frame(row.names = N)
-
-loops <- 10^6;
-time0 <- proc.time() #we start the timer
-for(r in R){
-  for(n in N){
-    rr <- seq(1,r);
-    X <- matrix(rnorm(n*r*loops),nrow = r*loops,ncol=n);#generate a random matrix
-    S <- rowVars(X); #row sample variances
-    dim(S)<-c(loops,r);#vector -> matrix
-    F <- sapply(1:loops,function(x) round(sum(sort(S[x,])*(2*rr -1) / r)/sum(S[x,]),3))
-    # alpha_0.01['N','R'] <- quantile(F,1-alpha); #95% jih je levo od te meje
-  }
-}
-
-time <- proc.time()-time0 #we stop the timer
-print(time)
-#pdf('Primer_1e+6_1percent.pdf')
-# x<-seq(0,10,0.01);
-# hist(F,freq = FALSE,xlim = c(min(F)-0.2,max(F)+0.2))
-# curve(dnorm(x,mean=mean(F),sd=sd(F)),add=TRUE, col = 'red')
-# abline(v=quantile(F,0.99),col='green',lwd=2)
-# dev.off()
-
-# user  system elapsed
-# 14.95    0.04   15.06
