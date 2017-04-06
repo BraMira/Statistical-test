@@ -1,0 +1,125 @@
+\documentclass{beamer}
+
+
+\setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!25]
+% or whatever
+
+\usetheme{Warsaw}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{}
+\setbeamersize{text margin left=0.5cm}
+  
+\usepackage[english]{babel}
+% or whatever
+
+\usepackage[utf8]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+\usepackage{amsfonts}
+\usepackage{amsmath,amsthm}
+\usepackage{url}
+
+\title[Statistical test]
+{Statistical test}
+\author[Mirjam Pergar]
+{\textbf{Student:}  Mirjam Pergar\\
+\textbf{Proposer and mentor:} dr. asist. Gregor Šega
+}
+\institute[Fakuleta za matematiko in fiziko]
+
+\date[April 20th 2017] % (optional)
+{April 20th 2017}
+
+
+\begin{document}
+
+\begin{frame}{Speaker's Name}{About Our Next Speaker}
+
+  \begin{itemize}
+  \item
+    Current affiliation of Speaker's Name
+
+    % Examples:
+    \begin{itemize}
+    \item
+      Professor of mathematics, University of Wherever.
+    \item
+      Junior partner at company X.
+    \item
+      Speaker for organization/project X.
+    \end{itemize}
+  \item
+    Experience and achievements
+    % Optional. Use this if it is appropriate to slightly flatter the
+    % speaker, for example if the speaker has been invited. 
+    % Using subitems, list things that make the speaker look
+    % interesting and competent.
+
+    % Examples:
+    \begin{itemize}
+    \item
+      Academic degree, but only if appropriate
+    \item
+      Current and/or previous positions, possibly with dates
+    \item
+      Publications (possibly just number of publications)
+    \item
+      Awards, prizes
+    \end{itemize}
+  \item
+    Concerning today's talk
+    % Optional. Use this to point out specific experiences/knowledge
+    % of the speaker that are important for the talk and that do not
+    % follow from the above.
+
+    % Examples:
+    \begin{itemize}
+    \item
+      Expert who has worked in the field/project for X month/years.
+    \item
+      Will present his/her/group's/company's research on the subject.
+    \item
+      Will summarize project report or current project status.
+    \end{itemize}
+  \end{itemize}  
+\end{frame}
+
+\end{document}
+
+library(matrixStats)
+
+
+N <- c(seq(2,10),seq(12,20,2),25,30,40,60);
+R <- c(seq(2,10),15,20);
+alpha <- 0.01;
+alpha_0.01 <- data.frame(row.names = N)
+
+loops <- 10^6;
+time0 <- proc.time() #we start the timer
+for(r in R){
+  for(n in N){
+    rr <- seq(1,r);
+    X <- matrix(rnorm(n*r*loops),nrow = r*loops,ncol=n);#generate a random matrix
+    S <- rowVars(X); #row sample variances
+    dim(S)<-c(loops,r);#vector -> matrix
+    F <- sapply(1:loops,function(x) round(sum(sort(S[x,])*(2*rr -1) / r)/sum(S[x,]),3))
+    # alpha_0.01['N','R'] <- quantile(F,1-alpha); #95% jih je levo od te meje
+  }
+}
+
+time <- proc.time()-time0 #we stop the timer
+print(time)
+#pdf('Primer_1e+6_1percent.pdf')
+# x<-seq(0,10,0.01);
+# hist(F,freq = FALSE,xlim = c(min(F)-0.2,max(F)+0.2))
+# curve(dnorm(x,mean=mean(F),sd=sd(F)),add=TRUE, col = 'red')
+# abline(v=quantile(F,0.99),col='green',lwd=2)
+# dev.off()
+
+# user  system elapsed
+# 14.95    0.04   15.06
