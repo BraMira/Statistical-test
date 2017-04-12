@@ -15,8 +15,8 @@ colnames(alpha_0.1)<-c(seq(2,10),15,20)
 loops <- 10^6;
 # time0 <- proc.time() #we start the timer
 
-n <- 2;
-r <- 2;
+n <- 18
+r <- 20
 
 
 rr <- seq(1,r);
