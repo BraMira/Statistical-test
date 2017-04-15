@@ -9,7 +9,7 @@ Proposer: Gregor Šega
 - [x] create a detailed project plan
 - [x] compute the first statistical test to see how long it takes to compute a single value and how many computations you need for a decent histogram
 - [x] compute the rest of the table
-- [ ] generate all the tables
+- [x] generate all the tables
 - [ ] compare it with a classical statistical test (which one)
 - [ ] How does variance affect the test
 - [ ] can we improve our test?
